@@ -1,12 +1,12 @@
 package com.softieas.phones.domain.models;
 
-public enum ImportStatus {
+public enum NumberStatus {
     VALID_NUMBER("VALID"),
     INVALID_NUMBER("INVALID"),
     FIXED_NUMBER("FIXED");
     private String code;
 
-    ImportStatus(String code) {
+    NumberStatus(String code) {
         this.code = code;
     }
 
@@ -14,14 +14,14 @@ public enum ImportStatus {
         return code;
     }
 
-    public static ImportStatus fromString(String code) throws IllegalArgumentException {
+    public static NumberStatus fromString(String code) throws IllegalArgumentException {
         switch (code.toUpperCase()) {
             case "VALID":
-                return ImportStatus.VALID_NUMBER;
+                return NumberStatus.VALID_NUMBER;
             case "INVALID":
-                return ImportStatus.INVALID_NUMBER;
+                return NumberStatus.INVALID_NUMBER;
             case "FIXED":
-                return ImportStatus.FIXED_NUMBER;
+                return NumberStatus.FIXED_NUMBER;
             default:
                 throw new IllegalArgumentException("code not exists");
         }
