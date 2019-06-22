@@ -1,10 +1,10 @@
 package com.softieas.phones.domain.entities;
 
-import com.softieas.phones.domain.models.NumberStatus;
+import com.softieas.phones.domain.models.PhoneStatus;
 import com.softieas.phones.domain.models.RejectionReason;
 
 import javax.persistence.*;
-import javax.swing.undo.AbstractUndoableEdit;
+
 
 @Entity
 @Table(name = "Phone")
@@ -21,7 +21,7 @@ public class Phone extends Auditable {
     private String originalNumber;
 
     @Column(name = "status", length = 10, nullable = false)
-    private NumberStatus status;
+    private PhoneStatus status;
 
     @Column(name = "rejection_code", length = 50)
     private RejectionReason rejection;
@@ -54,11 +54,11 @@ public class Phone extends Auditable {
         this.originalNumber = originalNumber;
     }
 
-    public NumberStatus getStatus() {
+    public PhoneStatus getStatus() {
         return status;
     }
 
-    public void setStatus(NumberStatus status) {
+    public void setStatus(PhoneStatus status) {
         this.status = status;
     }
 
