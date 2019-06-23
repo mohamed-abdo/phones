@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -40,7 +41,8 @@ public class Phone {
                     .build();
         var resource = file.getResource();
         var phonesStream = this.phoneService.parseInputStream(resource.getInputStream());
-        var response = this.phoneService.importData(phonesStream);
+        var response = this.phoneService.importData(phonesStream)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return ResponseEntity.of(Optional.of(response));
     }
 }

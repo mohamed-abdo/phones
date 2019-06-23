@@ -1,9 +1,17 @@
 package com.softieas.phones.domain.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class UploadStats {
+@Data
+@AllArgsConstructor
+@Builder
+public class UploadStats implements Serializable {
     private UUID fileRef;
     private int validNumbers;
     private int fixedNumbers;

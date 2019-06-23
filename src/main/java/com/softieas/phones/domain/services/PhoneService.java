@@ -5,6 +5,7 @@ import com.softieas.phones.domain.models.UploadStats;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface PhoneService {
@@ -13,7 +14,7 @@ public interface PhoneService {
         return new String[]{"text/csv"};
     }
 
-    UploadStats importData(Stream<PhoneSheet> phoneSheetStream);
+    Optional<UploadStats> importData(Stream<PhoneSheet> phoneSheetStream);
 
     Stream<PhoneSheet> parseInputStream(InputStream inputStream) throws IOException;
 }
