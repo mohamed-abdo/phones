@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,13 +31,14 @@ public class Phone {
     }
 
     @PostMapping("/importFile")
-    public ResponseEntity importFile(@RequestBody MultipartFile file) throws IOException {
-        LOGGER.debug("received file :{}, size:{}", file.getName(), file.getSize());
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    ResponseEntity importFile(@RequestBody MultipartFile file) throws IOException {
         if (Objects.isNull(file))
-            return ResponseEntity
-                    .badRequest()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "file not found");
+
+        LOGGER.debug("received file :{}, size:{}", file.getName(), file.getSize());
+
         var resource = file.getResource();
         var phonesStream = this.phoneService.parseInputStream(resource.getInputStream());
         var response = this.phoneService.importData(phonesStream)

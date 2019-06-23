@@ -1,8 +1,8 @@
 package com.softieas.phones.utils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
@@ -22,6 +22,7 @@ class ApiError {
     private LocalDateTime timestamp = LocalDateTime.now();
     @Builder.Default
     private String message = "Unexpected error";
+    @Getter(AccessLevel.NONE)
     private String debugMessage;
     @Setter
     private Set<ApiValidationError> moreDetails;
