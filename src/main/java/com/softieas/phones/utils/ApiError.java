@@ -37,7 +37,7 @@ class ApiError {
         this.debugMessage = ex.getLocalizedMessage();
     }
 
-    public ResponseEntity<Object> buildResponseEntity() {
+    ResponseEntity<Object> buildResponseEntity() {
         return new ResponseEntity<>(this, this.getStatus());
     }
 

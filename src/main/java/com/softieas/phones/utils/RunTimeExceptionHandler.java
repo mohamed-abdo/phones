@@ -12,9 +12,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class RunTimeExceptionHandler extends RuntimeException {
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> genericHandler(Throwable ex) {
-        ApiError apiError = new ApiError(INTERNAL_SERVER_ERROR);
-        apiError.setMessage(ex.getMessage());
-        return apiError.buildResponseEntity();
+    protected ResponseEntity<Object> genericHandler(Exception ex) {
+        return new ApiError(INTERNAL_SERVER_ERROR, ex.getMessage(), ex)
+                .buildResponseEntity();
     }
 }
