@@ -3,6 +3,8 @@ package com.softieas.phones.utils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -10,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
+@Getter
 class ApiError {
     @Builder.Default
     private UUID debugId = UUID.randomUUID();
@@ -21,13 +23,14 @@ class ApiError {
     @Builder.Default
     private String message = "Unexpected error";
     private String debugMessage;
+    @Setter
     private Set<ApiValidationError> moreDetails;
 
     ApiError(HttpStatus status) {
         this.status = status;
     }
 
-    ApiError(HttpStatus status, String message, Throwable ex) {
+    ApiError(HttpStatus status, String message, Exception ex) {
 
         this.status = status;
         this.message = message;
