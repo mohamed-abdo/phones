@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -56,5 +57,23 @@ class PhoneTest {
         var httpBody = new HttpEntity<>(body, headers);
         var response = restTemplate.postForEntity(uri, httpBody, UploadStats.class);
         Assertions.assertSame(response.getStatusCode(), HttpStatus.OK);
+    }
+
+    @Test
+    void test_importFile_no_file() throws URISyntaxException, IOException {
+        final var baseUrl = String.format("http://localhost:%d/phone/importFile", randomPortNumber);
+        final URI uri = new URI(baseUrl);
+        final var restTemplate = new RestTemplate();
+        var headers = new HttpHeaders();
+        headers.add("content-type", CONTENT_TYPE);
+        var body = new LinkedMultiValueMap<String, Resource>();
+        var httpBody = new HttpEntity<>(body, headers);
+        try {
+            restTemplate.postForEntity(uri, httpBody, UploadStats.class);
+            Assertions.fail();
+        } catch (HttpClientErrorException ex) {
+            Assertions.assertSame(ex.getStatusCode(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 }
