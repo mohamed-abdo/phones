@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -21,6 +22,7 @@ public class PhoneServiceImpl implements PhoneService {
 
     @Override
     public Stream<PhoneSheet> parseInputStream(@NonNull InputStream inputStream) throws IOException {
+        Objects.requireNonNull(inputStream);
         try (var csvReader = new CSVReader(new InputStreamReader(inputStream))) {
             return csvReader
                     .readAll()
