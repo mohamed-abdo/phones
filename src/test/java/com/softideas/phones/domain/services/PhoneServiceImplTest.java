@@ -3,6 +3,7 @@ package com.softideas.phones.domain.services;
 import com.softideas.phones.domain.models.PhoneNumberStatus;
 import com.softideas.phones.domain.models.PhoneSheet;
 import com.softideas.phones.domain.models.RejectionReason;
+import com.softideas.phones.domain.repositories.PhoneRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +24,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toMap;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {PhoneServiceImpl.class})
+@SpringBootTest(classes = {PhoneServiceImpl.class, NormalizedNumber.class})
 class PhoneServiceImplTest {
 
     private final PhoneService phoneService;

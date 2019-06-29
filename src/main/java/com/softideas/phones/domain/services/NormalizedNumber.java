@@ -4,12 +4,16 @@ import com.softideas.phones.domain.models.PhoneNumberStatus;
 import com.softideas.phones.domain.models.RejectionReason;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
-@Data
+@Component
+@Getter
 public class NormalizedNumber {
     private final String number;
     private String fixedNumber;
@@ -19,10 +23,10 @@ public class NormalizedNumber {
     private RejectionReason rejectionReason = RejectionReason.NOT_APPLICABLE;
     private PhoneNumberFixer phoneNumberFixer;
 
-    final PhoneNumberValidator phoneNumberValidator;
+    @Autowired
+    private PhoneNumberValidator phoneNumberValidator;
 
-    NormalizedNumber(@Autowired PhoneNumberValidator phoneNumberValidator, @NonNull final String number) {
-        this.phoneNumberValidator = phoneNumberValidator;
+    NormalizedNumber(@NonNull final String number) {
         this.number = number;
         if (this.phoneNumberValidator.isValidCellNumber(this.number)) {
             this.fixedNumber = this.number;

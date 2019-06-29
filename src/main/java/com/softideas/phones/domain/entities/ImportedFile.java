@@ -17,6 +17,6 @@ public class ImportedFile extends Auditable {
     @Column(name = "id")
     private UUID fileRef;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH, mappedBy = "importedFile")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "importedFile")
     private List<Phone> phones;
 }
