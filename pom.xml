@@ -8,7 +8,7 @@
 		<version>2.2.0.BUILD-SNAPSHOT</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.softieas</groupId>
+	<groupId>com.softideas</groupId>
 	<artifactId>phones</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>phones</name>
@@ -62,6 +62,12 @@
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<version>5.3.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>5.4.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
