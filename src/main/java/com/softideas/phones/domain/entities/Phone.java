@@ -14,14 +14,13 @@ import javax.persistence.*;
 @Setter
 public class Phone extends Auditable {
     @Id
-    @GeneratedValue
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "number", length = 20, nullable = false)
+    @Column(name = "number", length = 50, nullable = false)
     private String number;
 
-    @Column(name = "original_number", length = 20, nullable = false)
+    @Column(name = "original_number", length = 50, nullable = false)
     private String originalNumber;
 
     @Column(name = "status", length = 10, nullable = false)

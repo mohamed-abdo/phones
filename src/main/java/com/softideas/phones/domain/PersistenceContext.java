@@ -19,7 +19,7 @@ import javax.persistence.SharedCacheMode;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-@Configuration
+//@Configuration
 public class PersistenceContext {
     private final String[] entityPackages = {"com.softideas.phones.domain.entities"};
 

@@ -1,20 +1,22 @@
 package com.softideas.phones.domain.services;
 
 import com.softideas.phones.domain.models.PhoneNumberStatus;
+import com.softideas.phones.domain.models.PhoneSheet;
 import com.softideas.phones.domain.models.RejectionReason;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
-@Component
 @Getter
 public class NormalizedNumber {
+    private final static Logger LOGGER = LoggerFactory.getLogger(NormalizedNumber.class);
+
+    @Builder.Default
+    private long numberId = 999999999;//invalid imported id
     private final String number;
     private String fixedNumber;
     @Builder.Default
@@ -23,11 +25,17 @@ public class NormalizedNumber {
     private RejectionReason rejectionReason = RejectionReason.NOT_APPLICABLE;
     private PhoneNumberFixer phoneNumberFixer;
 
-    @Autowired
-    private PhoneNumberValidator phoneNumberValidator;
+    private final PhoneNumberValidator phoneNumberValidator;
 
-    NormalizedNumber(@NonNull final String number) {
-        this.number = number;
+    NormalizedNumber(PhoneNumberValidator phoneNumberValidator, @NonNull final PhoneSheet phoneSheet) {
+        try {
+            this.numberId = Long.valueOf(phoneSheet.getId());
+        } catch (NumberFormatException e) {
+            LOGGER.error("invalid phone number id format, id:{}, number:{}", phoneSheet.getId(), phoneSheet.getNumber());
+        }
+
+        this.phoneNumberValidator = phoneNumberValidator;
+        this.number = phoneSheet.getNumber();
         if (this.phoneNumberValidator.isValidCellNumber(this.number)) {
             this.fixedNumber = this.number;
             this.phoneNumberStatus = PhoneNumberStatus.VALID_NUMBER;

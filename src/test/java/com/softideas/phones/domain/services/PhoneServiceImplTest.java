@@ -3,7 +3,6 @@ package com.softideas.phones.domain.services;
 import com.softideas.phones.domain.models.PhoneNumberStatus;
 import com.softideas.phones.domain.models.PhoneSheet;
 import com.softideas.phones.domain.models.RejectionReason;
-import com.softideas.phones.domain.repositories.PhoneRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +12,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
@@ -24,12 +24,13 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toMap;
 
 @ExtendWith(SpringExtension.class)
+@EnableJpaRepositories(basePackages = {"com.softideas.phones.domain.repositories.*"})
 @SpringBootTest(classes = {PhoneServiceImpl.class, NormalizedNumber.class})
 class PhoneServiceImplTest {
 
     private final PhoneService phoneService;
 
-    private final String dataSheet = "103343262,6478342944, 103426540,84528784843, 103278808,263716791426, 103426733,27736529279, 103426000,27718159078, 103218982,19855201547, 103427376,27717278645, 103243034,81667273413";
+    private final String dataSheet = "103343262,_D0736529279, 103426540,84528784843, 103278808,263716791426, 103426733,27736529279, 103426000,27718159078, 103218982,19855201547, 103427376,27717278645, 103243034,81667273413";
 
     private final Stream<PhoneSheet> sheetStream;
 
@@ -76,14 +77,14 @@ class PhoneServiceImplTest {
             "0436529279:false",
             "6478342944:false"}, delimiter = ':')
     void test_FixPhoneNumber(String number, boolean expected) {
-        Assertions.assertEquals(phoneService.tryToFixNumber(number)
+        Assertions.assertEquals(phoneService.tryToFixNumber(new PhoneSheet("0", number))
                 .getPhoneNumberStatus() == PhoneNumberStatus.FIXED_NUMBER, expected);
     }
 
     @ParameterizedTest
     @MethodSource("provide_test_FixPhoneNumber_statusCase")
     void test_FixPhoneNumber_statusCase(String number, PhoneNumberStatus phoneNumberStatus, RejectionReason rejectionReason) {
-        var actual = phoneService.tryToFixNumber(number);
+        var actual = phoneService.tryToFixNumber(new PhoneSheet("0", number));
         Assertions.assertEquals(actual.getPhoneNumberStatus(), phoneNumberStatus);
         Assertions.assertEquals(actual.getRejectionReason(), rejectionReason);
     }

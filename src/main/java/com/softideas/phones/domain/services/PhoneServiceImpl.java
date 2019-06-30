@@ -5,14 +5,14 @@ import com.softideas.phones.domain.entities.ImportedFile;
 import com.softideas.phones.domain.entities.Phone;
 import com.softideas.phones.domain.models.PhoneSheet;
 import com.softideas.phones.domain.models.UploadStats;
+import com.softideas.phones.domain.repositories.ImportedFileRepository;
 import com.softideas.phones.domain.repositories.PhoneRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,11 +26,13 @@ import java.util.stream.Stream;
 @Service
 public class PhoneServiceImpl extends PhoneNumberSouthAfricaValidatorImpl implements PhoneService {
 
-    @Autowired
-    private EntityManagerFactory entityManager;
+    private final static Logger LOGGER = LoggerFactory.getLogger(PhoneServiceImpl.class);
 
     @Autowired
     private PhoneRepository phoneRepository;
+
+    @Autowired
+    private ImportedFileRepository importedFileRepository;
 
     @Transactional
     @Override
@@ -39,10 +41,11 @@ public class PhoneServiceImpl extends PhoneNumberSouthAfricaValidatorImpl implem
         var uuid = UUID.randomUUID();
         importedFile.setFileRef(uuid);
         var phoneList = phoneSheetStream
-                .map(f -> new NormalizedNumber(f.getNumber()))
+                .map(this::tryToFixNumber)
                 .map(n -> {
                     Phone phone = new Phone();
                     phone.setImportedFile(importedFile);
+                    phone.setId(n.getNumberId());
                     phone.setNumber(Optional.ofNullable(n.getFixedNumber()).orElse(n.getNumber()));
                     phone.setOriginalNumber(n.getNumber());
                     phone.setStatus(n.getPhoneNumberStatus());
@@ -51,7 +54,7 @@ public class PhoneServiceImpl extends PhoneNumberSouthAfricaValidatorImpl implem
                 })
                 .collect(Collectors.toList());
         importedFile.setPhones(phoneList);
-        entityManager.createEntityManager().persist(importedFile);
+        importedFileRepository.save(importedFile);
         return Optional.empty();
     }
 
@@ -68,8 +71,8 @@ public class PhoneServiceImpl extends PhoneNumberSouthAfricaValidatorImpl implem
     }
 
     @Override
-    public NormalizedNumber tryToFixNumber(@NonNull String number) {
-        Objects.requireNonNull(number);
-        return new NormalizedNumber(number);
+    public NormalizedNumber tryToFixNumber(@NonNull PhoneSheet phoneSheet) {
+        Objects.requireNonNull(phoneSheet);
+        return new NormalizedNumber(this, phoneSheet);
     }
 }

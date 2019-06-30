@@ -2,7 +2,7 @@ package com.softideas.phones.domain.models;
 
 public enum PhoneNumberStatus {
     VALID_NUMBER("VALID"),
-    INVALID_NUMBER("MALFORMED"),
+    INVALID_NUMBER("INVALID"),
     FIXED_NUMBER("FIXED");
     private String code;
 
@@ -15,16 +15,7 @@ public enum PhoneNumberStatus {
     }
 
     public static PhoneNumberStatus fromString(String code) throws IllegalArgumentException {
-        switch (code.toUpperCase()) {
-            case "VALID":
-                return PhoneNumberStatus.VALID_NUMBER;
-            case "MALFORMED":
-                return PhoneNumberStatus.INVALID_NUMBER;
-            case "FIXED":
-                return PhoneNumberStatus.FIXED_NUMBER;
-            default:
-                throw new IllegalArgumentException("code not exists");
-        }
+        return PhoneNumberStatus.valueOf(code);
     }
 
     @Override

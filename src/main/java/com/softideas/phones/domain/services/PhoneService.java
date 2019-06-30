@@ -19,5 +19,5 @@ public interface PhoneService extends PhoneNumberValidator {
 
     Stream<PhoneSheet> parseInputStream(InputStream inputStream) throws IOException;
 
-    NormalizedNumber tryToFixNumber(@NonNull String number);
+    NormalizedNumber tryToFixNumber(@NonNull PhoneSheet phoneSheet);
 }
