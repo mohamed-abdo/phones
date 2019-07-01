@@ -20,7 +20,7 @@ public class NormalizedNumber {
     private final String number;
     private String fixedNumber;
     @Builder.Default
-    private PhoneNumberStatus phoneNumberStatus = PhoneNumberStatus.INVALID_NUMBER;
+    private PhoneNumberStatus phoneNumberStatus = PhoneNumberStatus.INVALID;
     @Builder.Default
     private RejectionReason rejectionReason = RejectionReason.NOT_APPLICABLE;
     private PhoneNumberFixer phoneNumberFixer;
@@ -38,7 +38,7 @@ public class NormalizedNumber {
         this.number = phoneSheet.getNumber();
         if (this.phoneNumberValidator.isValidCellNumber(this.number)) {
             this.fixedNumber = this.number;
-            this.phoneNumberStatus = PhoneNumberStatus.VALID_NUMBER;
+            this.phoneNumberStatus = PhoneNumberStatus.VALID;
         } else {
             var fixEngine = Arrays.stream(PhoneNumberFixer.values())
                     .filter(f -> this.phoneNumberValidator.isValidCellNumber(f.fixNumber(this.number)))
@@ -46,7 +46,7 @@ public class NormalizedNumber {
                     .map(f -> {
                         this.fixedNumber = f.fixNumber(this.number);
                         this.phoneNumberFixer = f;
-                        this.phoneNumberStatus = PhoneNumberStatus.FIXED_NUMBER;
+                        this.phoneNumberStatus = PhoneNumberStatus.FIXED;
                         return this;
                     });
             if (fixEngine.isEmpty()) {

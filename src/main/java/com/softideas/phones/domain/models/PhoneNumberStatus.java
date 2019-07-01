@@ -1,9 +1,9 @@
 package com.softideas.phones.domain.models;
 
 public enum PhoneNumberStatus {
-    VALID_NUMBER("VALID"),
-    INVALID_NUMBER("INVALID"),
-    FIXED_NUMBER("FIXED");
+    VALID("VALID"),
+    INVALID("INVALID"),
+    FIXED("FIXED");
     private String code;
 
     PhoneNumberStatus(String code) {
