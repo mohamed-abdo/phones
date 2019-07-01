@@ -42,20 +42,28 @@ public class PhoneServiceImpl extends PhoneNumberSouthAfricaValidatorImpl implem
         importedFile.setFileRef(uuid);
         var phoneList = phoneSheetStream
                 .map(this::tryToFixNumber)
-                .map(n -> {
-                    Phone phone = new Phone();
-                    phone.setImportedFile(importedFile);
-                    phone.setId(n.getNumberId());
-                    phone.setNumber(Optional.ofNullable(n.getFixedNumber()).orElse(n.getNumber()));
-                    phone.setOriginalNumber(n.getNumber());
-                    phone.setStatus(n.getPhoneNumberStatus());
-                    phone.setRejection(n.getRejectionReason());
-                    return phone;
-                })
+                .map(n -> this.mapPhone(n, importedFile))
                 .collect(Collectors.toList());
         importedFile.setPhones(phoneList);
         importedFileRepository.save(importedFile);
         return Optional.empty();
+    }
+
+    private Phone mapPhone(NormalizedNumber normalizedNumber, ImportedFile importedFile) {
+        Phone phone = phoneRepository.findById(normalizedNumber.getNumberId())
+                .orElseGet(() -> this.getNewPhoneObj(normalizedNumber, importedFile));
+        phone.setNumber(Optional.ofNullable(normalizedNumber.getFixedNumber()).orElse(normalizedNumber.getNumber()));
+        phone.setOriginalNumber(normalizedNumber.getNumber());
+        phone.setStatus(normalizedNumber.getPhoneNumberStatus());
+        phone.setRejection(normalizedNumber.getRejectionReason());
+        return phone;
+    }
+
+    private Phone getNewPhoneObj(NormalizedNumber normalizedNumber, ImportedFile importedFile) {
+        Phone phone = new Phone();
+        phone.setImportedFile(importedFile);
+        phone.setId(normalizedNumber.getNumberId());
+        return phone;
     }
 
     @Override
