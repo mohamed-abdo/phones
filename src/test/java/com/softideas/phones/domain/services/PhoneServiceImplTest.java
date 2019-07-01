@@ -59,7 +59,7 @@ class PhoneServiceImplTest {
     void test_importData_happyCase() {
         var result = phoneService.importData(this.sheetStream);
         Assertions.assertTrue(result.isPresent());
-        //Assertions.assertEquals(result.get().getValidNumbers(), this.sheetStream.count());
+        Assertions.assertEquals(3, result.get().getValidNumbers());
     }
 
     @ParameterizedTest
@@ -78,7 +78,7 @@ class PhoneServiceImplTest {
             "26771835182:false",
             "27713564440:true"}, delimiter = ':')
     void test_validateNumber(String number, boolean expected) {
-        Assertions.assertEquals(phoneService.isValidCellNumber(number), expected);
+        Assertions.assertEquals(expected, phoneService.isValidCellNumber(number));
     }
 
     @ParameterizedTest
@@ -91,16 +91,16 @@ class PhoneServiceImplTest {
             "0436529279:false",
             "6478342944:false"}, delimiter = ':')
     void test_FixPhoneNumber(String number, boolean expected) {
-        Assertions.assertEquals(phoneService.tryToFixNumber(new PhoneSheet("0", number))
-                .getPhoneNumberStatus() == PhoneNumberStatus.FIXED, expected);
+        Assertions.assertEquals(expected, phoneService.tryToFixNumber(new PhoneSheet("0", number))
+                .getPhoneNumberStatus() == PhoneNumberStatus.FIXED);
     }
 
     @ParameterizedTest
     @MethodSource("provide_test_FixPhoneNumber_statusCase")
     void test_FixPhoneNumber_statusCase(String number, PhoneNumberStatus phoneNumberStatus, RejectionReason rejectionReason) {
         var actual = phoneService.tryToFixNumber(new PhoneSheet("0", number));
-        Assertions.assertEquals(actual.getPhoneNumberStatus(), phoneNumberStatus);
-        Assertions.assertEquals(actual.getRejectionReason(), rejectionReason);
+        Assertions.assertEquals(phoneNumberStatus, actual.getPhoneNumberStatus());
+        Assertions.assertEquals(rejectionReason, actual.getRejectionReason());
     }
 
     private static Stream<Arguments> provide_test_FixPhoneNumber_statusCase() {

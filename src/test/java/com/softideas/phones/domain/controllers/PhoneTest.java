@@ -42,7 +42,7 @@ class PhoneTest {
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var response = restTemplate.getForEntity(uri, String.class);
-        Assertions.assertSame(response.getStatusCode(), HttpStatus.OK);
+        Assertions.assertSame(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -56,7 +56,7 @@ class PhoneTest {
         body.add("file", resource);
         var httpBody = new HttpEntity<>(body, headers);
         var response = restTemplate.postForEntity(uri, httpBody, UploadStats.class);
-        Assertions.assertSame(response.getStatusCode(), HttpStatus.OK);
+        Assertions.assertSame(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -72,7 +72,7 @@ class PhoneTest {
             restTemplate.postForEntity(uri, httpBody, UploadStats.class);
             Assertions.fail();
         } catch (HttpClientErrorException ex) {
-            Assertions.assertSame(ex.getStatusCode(), HttpStatus.BAD_REQUEST);
+            Assertions.assertSame(HttpStatus.BAD_REQUEST, ex.getStatusCode());
         }
 
     }

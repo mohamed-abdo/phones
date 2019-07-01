@@ -12,6 +12,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class UploadStats implements Serializable {
+    public UploadStats(){
+
+    }
     private UUID fileRef;
     private int validNumbers;
     private int fixedNumbers;

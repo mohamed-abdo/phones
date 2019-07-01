@@ -3,6 +3,7 @@ package com.softideas.phones.domain.services;
 import com.opencsv.CSVReader;
 import com.softideas.phones.domain.entities.ImportedFile;
 import com.softideas.phones.domain.entities.Phone;
+import com.softideas.phones.domain.models.PhoneNumberStatus;
 import com.softideas.phones.domain.models.PhoneSheet;
 import com.softideas.phones.domain.models.UploadStats;
 import com.softideas.phones.domain.repositories.ImportedFileRepository;
@@ -17,6 +18,8 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,13 +43,24 @@ public class PhoneServiceImpl extends PhoneNumberSouthAfricaValidatorImpl implem
         ImportedFile importedFile = new ImportedFile();
         var uuid = UUID.randomUUID();
         importedFile.setFileRef(uuid);
+
         var phoneList = phoneSheetStream
                 .map(this::tryToFixNumber)
                 .map(n -> this.mapPhone(n, importedFile))
                 .collect(Collectors.toList());
+
         importedFile.setPhones(phoneList);
         importedFileRepository.save(importedFile);
-        return Optional.empty();
+
+        return Optional.of(calcStats(uuid, phoneList));
+    }
+
+    private UploadStats calcStats(UUID uuid, List<Phone> phoneList) {
+        var phoneGroups = phoneList.stream().collect(Collectors.groupingBy(Phone::getStatus));
+        var validNumbers = phoneGroups.get(PhoneNumberStatus.VALID).size();
+        var fixedNumbers = phoneGroups.get(PhoneNumberStatus.FIXED).size();
+        var inValidNumbers = phoneGroups.get(PhoneNumberStatus.INVALID).size();
+        return new UploadStats(uuid, validNumbers, fixedNumbers, inValidNumbers, LocalDateTime.now());
     }
 
     private Phone mapPhone(NormalizedNumber normalizedNumber, ImportedFile importedFile) {
