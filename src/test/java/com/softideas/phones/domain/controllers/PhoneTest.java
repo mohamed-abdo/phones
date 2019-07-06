@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @ExtendWith(SpringExtension.class)
@@ -59,6 +60,29 @@ class PhoneTest {
         var response = restTemplate.postForEntity(uri, httpBody, UploadStats.class);
         var expectedFunc = Stream.of(HttpStatus.CREATED, HttpStatus.OK);
         Assertions.assertTrue(expectedFunc.anyMatch(s -> s.equals(response.getStatusCode())));
+    }
+
+    @Test
+    void test_getFileStats() throws URISyntaxException {
+        final var baseUrl = String.format("http://localhost:%d/phoneSrv/file/%s", randomPortNumber, UUID.randomUUID());
+        final URI uri = new URI(baseUrl);
+        final var restTemplate = new RestTemplate();
+        try {
+            restTemplate.getForEntity(uri, UploadStatusResource.class);
+            Assertions.fail();
+        } catch (HttpClientErrorException ex) {
+            Assertions.assertSame(HttpStatus.NOT_FOUND, ex.getStatusCode());
+
+        }
+    }
+
+    @Test
+    void test_ValidateNumber() throws URISyntaxException {
+        final var baseUrl = String.format("http://localhost:%d/phoneSrv/validate/%s", randomPortNumber, "7500232429");
+        final URI uri = new URI(baseUrl);
+        final var restTemplate = new RestTemplate();
+        var response = restTemplate.getForEntity(uri, PhoneNumberResource.class);
+        Assertions.assertSame(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test

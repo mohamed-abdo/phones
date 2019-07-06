@@ -18,7 +18,7 @@ public class ImportedFile extends Auditable {
     private UUID fileRef;
 
 
-    @Column(name = "checksum",length = 50)
+    @Column(name = "checksum", length = 50, nullable = false)
     private String checksum;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "importedFile")

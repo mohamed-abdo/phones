@@ -1,5 +1,7 @@
 package com.softideas.phones.domain.controllers;
 
+import com.softideas.phones.domain.models.PhoneNumber;
+import com.softideas.phones.domain.models.PhoneSheet;
 import com.softideas.phones.domain.services.PhoneService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -25,11 +28,13 @@ public class Phone {
 
     private final PhoneService phoneService;
     private final UploadStatusResource uploadStatusResource;
+    private final PhoneNumberResource phoneNumberResource;
 
 
-    public Phone(@Autowired PhoneService phoneService,@Autowired UploadStatusResource uploadStatusResource) {
+    public Phone(@Autowired PhoneService phoneService, @Autowired UploadStatusResource uploadStatusResource, @Autowired PhoneNumberResource phoneNumberResource) {
         this.phoneService = phoneService;
-        this.uploadStatusResource=uploadStatusResource;
+        this.uploadStatusResource = uploadStatusResource;
+        this.phoneNumberResource = phoneNumberResource;
     }
 
     @GetMapping("/ping")
@@ -64,7 +69,9 @@ public class Phone {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     HttpEntity<?> getFileStatus(@PathVariable UUID fileId) {
-        LOGGER.debug("fetching file :{}", fileId);
+        LOGGER.debug("get file stats :{}", fileId);
+        if (Objects.isNull(fileId))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "fileId is missing");
         var stats = phoneService.getImportedFileStats(fileId)
                 .map(this.uploadStatusResource::toResource)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -72,4 +79,21 @@ public class Phone {
         return ResponseEntity.ok(stats);
     }
 
+    @GetMapping("/validate/{number}")
+    public @ResponseBody
+    HttpEntity<?> validate(@PathVariable String number) {
+        LOGGER.debug("validate phone number:{}", number);
+        if (Objects.isNull(number))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "number is missing");
+        var normalizedNumber = phoneService.tryToFixNumber(new PhoneSheet("-1", number));
+        var phoneNumber = PhoneNumber
+                .builder()
+                .number(normalizedNumber.getNumber())
+                .fixedNumber(normalizedNumber.getFixedNumber())
+                .phoneNumberStatus(normalizedNumber.getPhoneNumberStatus())
+                .rejectionReason(normalizedNumber.getRejectionReason())
+                .fixer(Optional.ofNullable(normalizedNumber.getPhoneNumberFixer()).map(Enum::name).orElse("n/a"))
+                .build();
+        return ResponseEntity.ok(phoneNumberResource.toResource(phoneNumber));
+    }
 }
