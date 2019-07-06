@@ -5,6 +5,7 @@ import com.softideas.phones.domain.models.PhoneSheet;
 import com.softideas.phones.domain.models.RejectionReason;
 import com.softideas.phones.domain.repositories.ImportedFileRepository;
 import com.softideas.phones.domain.repositories.PhoneRepository;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,8 +57,9 @@ class PhoneServiceImplTest {
     }
 
     @Test
-    void test_importData_happyCase() {
-        var result = phoneService.importData(this.sheetStream);
+    void test_importData_defaultCase() {
+        var dataChecksum = DigestUtils.md2Hex(this.dataSheet);
+        var result = phoneService.importData(dataChecksum, this.sheetStream);
         Assertions.assertTrue(result.isPresent());
         Assertions.assertEquals(3, result.get().getValidNumbers());
     }

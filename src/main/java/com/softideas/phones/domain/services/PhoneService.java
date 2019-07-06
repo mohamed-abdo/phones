@@ -7,6 +7,7 @@ import org.springframework.lang.NonNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public interface PhoneService extends PhoneNumberValidator {
@@ -15,9 +16,11 @@ public interface PhoneService extends PhoneNumberValidator {
         return new String[]{"text/csv"};
     }
 
-    Optional<UploadStats> importData(Stream<PhoneSheet> phoneSheetStream);
+    Optional<UploadStats> importData(@NonNull String fileChecksum,@NonNull Stream<PhoneSheet> phoneSheetStream);
 
-    Stream<PhoneSheet> parseInputStream(InputStream inputStream) throws IOException;
+    Stream<PhoneSheet> parseInputStream(@NonNull InputStream inputStream) throws IOException;
 
     NormalizedNumber tryToFixNumber(@NonNull PhoneSheet phoneSheet);
+
+    Optional<UploadStats> getImportedFileStats(@NonNull UUID fileId);
 }

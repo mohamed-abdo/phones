@@ -29,7 +29,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8080/phone/importFile",
+					"raw": "http://localhost:8080/phoneSrv/importFile",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -62,7 +62,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/phone/ping",
+					"raw": "http://localhost:8080/phoneSrv/ping",
 					"protocol": "http",
 					"host": [
 						"localhost"

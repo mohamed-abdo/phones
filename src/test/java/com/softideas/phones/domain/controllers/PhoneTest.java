@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.stream.Stream;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -38,7 +39,7 @@ class PhoneTest {
 
     @Test
     void test_ping() throws URISyntaxException {
-        final var baseUrl = String.format("http://localhost:%d/phone/ping", randomPortNumber);
+        final var baseUrl = String.format("http://localhost:%d/phoneSrv/ping", randomPortNumber);
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var response = restTemplate.getForEntity(uri, String.class);
@@ -47,7 +48,7 @@ class PhoneTest {
 
     @Test
     void test_importFile() throws URISyntaxException, IOException {
-        final var baseUrl = String.format("http://localhost:%d/phone/importFile", randomPortNumber);
+        final var baseUrl = String.format("http://localhost:%d/phoneSrv/importFile", randomPortNumber);
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var headers = new HttpHeaders();
@@ -56,12 +57,13 @@ class PhoneTest {
         body.add("file", resource);
         var httpBody = new HttpEntity<>(body, headers);
         var response = restTemplate.postForEntity(uri, httpBody, UploadStats.class);
-        Assertions.assertSame(HttpStatus.OK, response.getStatusCode());
+        var expectedFunc = Stream.of(HttpStatus.CREATED, HttpStatus.OK);
+        Assertions.assertTrue(expectedFunc.anyMatch(s -> s.equals(response.getStatusCode())));
     }
 
     @Test
     void test_importFile_no_file() throws URISyntaxException, IOException {
-        final var baseUrl = String.format("http://localhost:%d/phone/importFile", randomPortNumber);
+        final var baseUrl = String.format("http://localhost:%d/phoneSrv/importFile", randomPortNumber);
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var headers = new HttpHeaders();

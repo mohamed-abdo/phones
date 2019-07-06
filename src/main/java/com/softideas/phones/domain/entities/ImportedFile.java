@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +17,10 @@ public class ImportedFile extends Auditable {
     @Column(name = "id")
     private UUID fileRef;
 
+
+    @Column(name = "checksum",length = 50)
+    private String checksum;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "importedFile")
-    private List<Phone> phones;
+    private Set<Phone> phones;
 }

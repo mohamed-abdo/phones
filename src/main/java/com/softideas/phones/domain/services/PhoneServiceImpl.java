@@ -19,10 +19,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,30 +35,44 @@ public class PhoneServiceImpl extends PhoneNumberSouthAfricaValidatorImpl implem
     @Autowired
     private ImportedFileRepository importedFileRepository;
 
+    @Override
+    public Optional<UploadStats> getImportedFileStats(@NonNull UUID fileId) {
+        return importedFileRepository.findById(fileId)
+                .map(importedFile ->
+                        calcStats(importedFile.getFileRef(), false, importedFile.getPhones()));
+    }
+
     @Transactional
     @Override
-    public Optional<UploadStats> importData(@NonNull Stream<PhoneSheet> phoneSheetStream) {
-        ImportedFile importedFile = new ImportedFile();
-        var uuid = UUID.randomUUID();
-        importedFile.setFileRef(uuid);
-
+    public Optional<UploadStats> importData(@NonNull String fileChecksum, @NonNull Stream<PhoneSheet> phoneSheetStream) {
+        LOGGER.debug("start importing phone data");
+        AtomicBoolean isNewFile = new AtomicBoolean(false);
+        ImportedFile importedFile = importedFileRepository.findByChecksum(fileChecksum)
+                .orElseGet(() -> {
+                    isNewFile.set(true);
+                    var newFile = new ImportedFile();
+                    newFile.setChecksum(fileChecksum);
+                    return newFile;
+                });
+        LOGGER.debug("file is new:{} ", isNewFile.get());
         var phoneList = phoneSheetStream
                 .map(this::tryToFixNumber)
                 .map(n -> this.mapPhone(n, importedFile))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
         importedFile.setPhones(phoneList);
         importedFileRepository.save(importedFile);
-
-        return Optional.of(calcStats(uuid, phoneList));
+        var stats = calcStats(importedFile.getFileRef(), isNewFile.get(), importedFile.getPhones());
+        LOGGER.debug("saving file, status:{} ", stats);
+        return Optional.of(stats);
     }
 
-    private UploadStats calcStats(UUID uuid, List<Phone> phoneList) {
+    private UploadStats calcStats(UUID uuid, boolean isNewFile, Set<Phone> phoneList) {
         var phoneGroups = phoneList.stream().collect(Collectors.groupingBy(Phone::getStatus));
-        var validNumbers = phoneGroups.get(PhoneNumberStatus.VALID).size();
-        var fixedNumbers = phoneGroups.get(PhoneNumberStatus.FIXED).size();
-        var inValidNumbers = phoneGroups.get(PhoneNumberStatus.INVALID).size();
-        return new UploadStats(uuid, validNumbers, fixedNumbers, inValidNumbers, LocalDateTime.now());
+        var validNumbers = phoneGroups.getOrDefault(PhoneNumberStatus.VALID, Collections.EMPTY_LIST).size();
+        var fixedNumbers = phoneGroups.getOrDefault(PhoneNumberStatus.FIXED, Collections.EMPTY_LIST).size();
+        var inValidNumbers = phoneGroups.getOrDefault(PhoneNumberStatus.INVALID, Collections.EMPTY_LIST).size();
+        return new UploadStats(uuid, validNumbers, fixedNumbers, inValidNumbers, isNewFile, LocalDateTime.now());
     }
 
     private Phone mapPhone(NormalizedNumber normalizedNumber, ImportedFile importedFile) {
