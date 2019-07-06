@@ -78,7 +78,7 @@ class PhoneTest {
 
     @Test
     void test_ValidateNumber() throws URISyntaxException {
-        final var baseUrl = String.format("http://localhost:%d/phoneSrv/validate/%s", randomPortNumber, "7500232429");
+        final var baseUrl = String.format("http://localhost:%d/phoneSrv/validate/%s", randomPortNumber, "750023242");
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var response = restTemplate.getForEntity(uri, PhoneNumberResource.class);
