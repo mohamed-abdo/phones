@@ -1,7 +1,7 @@
 HELP.md
 /target/
 !.mvn/wrapper/maven-wrapper.jar
-
+/data/
 ### STS ###
 .apt_generated
 .classpath
@@ -10,6 +10,7 @@ HELP.md
 .settings
 .springBeans
 .sts4-cache
+.DS_Store
 
 ### IntelliJ IDEA ###
 .idea
