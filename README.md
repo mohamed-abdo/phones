@@ -147,7 +147,7 @@ ex:
 ```
  @Test
     void test_importFile() throws URISyntaxException, IOException {
-        final var baseUrl = String.format("http://localhost:%d/phones/importFile", randomPortNumber);
+        final var baseUrl = String.format("https://localhost:%d/phones/import", randomPortNumber);
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var headers = new HttpHeaders();
@@ -165,12 +165,12 @@ ex:
 
 # run
 `mvn spring-boot:run`
-- {{srv-url}} -> http://localhost:5050/  `you can change from application.properties`
+- {{srv-url}} -> https://localhost:5050/  `you can change from application.properties`
 - default / ping url: {{srv-url}}/phones/ping -> ok, 200
 
 # request - response
 
-1- {{srv-url}}/phones/importFile
+1- {{srv-url}}/phones/import
   - `REQUEST` body accept mulitpart/form-data "file"
   - `RESPONSE` 
     ```
@@ -182,7 +182,7 @@ ex:
     "createdOn": "2019-07-07T23:31:21.188331",
     "_links": {
         "self": {
-            "href": "http://localhost:5050/phones/file/a5da7990-cce7-49aa-9873-f0fcdb3c9b59"
+            "href": "https://localhost:5050/phones/file/a5da7990-cce7-49aa-9873-f0fcdb3c9b59"
         }
     }
     }
@@ -200,7 +200,7 @@ ex:
     "createdOn": "2019-07-07T23:34:01.275234",
     "_links": {
         "self": {
-            "href": "http://localhost:5050/phones/file/a5da7990-cce7-49aa-9873-f0fcdb3c9b59"
+            "href": "https://localhost:5050/phones/file/a5da7990-cce7-49aa-9873-f0fcdb3c9b59"
         }
     }
     }
@@ -218,7 +218,7 @@ ex:
     "fixer": "ADD_PREFIX_ZERO",
     "_links": {
         "self": {
-            "href": "http://localhost:5050/phones/validate/750023242"
+            "href": "https://localhost:5050/phones/validate/750023242"
         }
     }
     }

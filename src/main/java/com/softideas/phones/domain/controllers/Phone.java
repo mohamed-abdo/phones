@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,13 +38,13 @@ public class Phone {
         this.phoneNumberResource = phoneNumberResource;
     }
 
-    @GetMapping("/ping")
+    @GetMapping(value = "/ping", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
     public HttpEntity ping() {
         return ResponseEntity.ok("ok");
     }
 
-    @PostMapping("/importFile")
+    @PostMapping("/import")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
     HttpEntity<?> importFile(@RequestBody MultipartFile file) throws IOException, URISyntaxException {

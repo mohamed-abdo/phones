@@ -49,7 +49,7 @@ class PhoneTest {
 
     @Test
     void test_importFile() throws URISyntaxException, IOException {
-        final var baseUrl = String.format("http://localhost:%d/phones/importFile", randomPortNumber);
+        final var baseUrl = String.format("http://localhost:%d/phones/import", randomPortNumber);
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var headers = new HttpHeaders();
@@ -87,7 +87,7 @@ class PhoneTest {
 
     @Test
     void test_importFile_no_file() throws URISyntaxException, IOException {
-        final var baseUrl = String.format("http://localhost:%d/phones/importFile", randomPortNumber);
+        final var baseUrl = String.format("http://localhost:%d/phones/import", randomPortNumber);
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var headers = new HttpHeaders();

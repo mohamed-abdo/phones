@@ -70,7 +70,7 @@
 					]
 				},
 				"url": {
-					"raw": "{{srv-url}}/phones/importFile?file",
+					"raw": "{{srv-url}}/phones/import?file",
 					"host": [
 						"{{srv-url}}"
 					],
