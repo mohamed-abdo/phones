@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/phoneSrv")
+@RequestMapping("/phones")
 public class Phone {
     private final static Logger LOGGER = LoggerFactory.getLogger(Phone.class);
 

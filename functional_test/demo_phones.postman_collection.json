@@ -18,12 +18,12 @@
 					}
 				],
 				"url": {
-					"raw": "{{srv-url}}/phoneSrv/ping",
+					"raw": "{{srv-url}}/phones/ping",
 					"host": [
 						"{{srv-url}}"
 					],
 					"path": [
-						"phoneSrv",
+						"phones",
 						"ping"
 					]
 				}
@@ -70,12 +70,12 @@
 					]
 				},
 				"url": {
-					"raw": "{{srv-url}}/phoneSrv/importFile?file",
+					"raw": "{{srv-url}}/phones/importFile?file",
 					"host": [
 						"{{srv-url}}"
 					],
 					"path": [
-						"phoneSrv",
+						"phones",
 						"importFile"
 					],
 					"query": [
@@ -94,12 +94,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{srv-url}}/phoneSrv/file/{{fileRef}}",
+					"raw": "{{srv-url}}/phones/file/{{fileRef}}",
 					"host": [
 						"{{srv-url}}"
 					],
 					"path": [
-						"phoneSrv",
+						"phones",
 						"file",
 						"{{fileRef}}"
 					]
@@ -113,12 +113,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{srv-url}}/phoneSrv/validate/750023242",
+					"raw": "{{srv-url}}/phones/validate/750023242",
 					"host": [
 						"{{srv-url}}"
 					],
 					"path": [
-						"phoneSrv",
+						"phones",
 						"validate",
 						"750023242"
 					]

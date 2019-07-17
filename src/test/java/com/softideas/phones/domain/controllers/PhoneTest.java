@@ -40,7 +40,7 @@ class PhoneTest {
 
     @Test
     void test_ping() throws URISyntaxException {
-        final var baseUrl = String.format("http://localhost:%d/phoneSrv/ping", randomPortNumber);
+        final var baseUrl = String.format("http://localhost:%d/phones/ping", randomPortNumber);
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var response = restTemplate.getForEntity(uri, String.class);
@@ -49,7 +49,7 @@ class PhoneTest {
 
     @Test
     void test_importFile() throws URISyntaxException, IOException {
-        final var baseUrl = String.format("http://localhost:%d/phoneSrv/importFile", randomPortNumber);
+        final var baseUrl = String.format("http://localhost:%d/phones/importFile", randomPortNumber);
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var headers = new HttpHeaders();
@@ -64,7 +64,7 @@ class PhoneTest {
 
     @Test
     void test_getFileStats() throws URISyntaxException {
-        final var baseUrl = String.format("http://localhost:%d/phoneSrv/file/%s", randomPortNumber, UUID.randomUUID());
+        final var baseUrl = String.format("http://localhost:%d/phones/file/%s", randomPortNumber, UUID.randomUUID());
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         try {
@@ -78,7 +78,7 @@ class PhoneTest {
 
     @Test
     void test_ValidateNumber() throws URISyntaxException {
-        final var baseUrl = String.format("http://localhost:%d/phoneSrv/validate/%s", randomPortNumber, "750023242");
+        final var baseUrl = String.format("http://localhost:%d/phones/validate/%s", randomPortNumber, "750023242");
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var response = restTemplate.getForEntity(uri, PhoneNumberResource.class);
@@ -87,7 +87,7 @@ class PhoneTest {
 
     @Test
     void test_importFile_no_file() throws URISyntaxException, IOException {
-        final var baseUrl = String.format("http://localhost:%d/phoneSrv/importFile", randomPortNumber);
+        final var baseUrl = String.format("http://localhost:%d/phones/importFile", randomPortNumber);
         final URI uri = new URI(baseUrl);
         final var restTemplate = new RestTemplate();
         var headers = new HttpHeaders();
