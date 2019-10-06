@@ -1,4 +1,4 @@
-package com.softideas.phones.domain.models;
+package com.softideas.phones.models;
 
 public enum PhoneNumberStatus {
     VALID("VALID"),

@@ -1,6 +1,6 @@
-package com.softideas.phones.domain.controllers;
+package com.softideas.phones.controllers;
 
-import com.softideas.phones.domain.models.PhoneNumber;
+import com.softideas.phones.models.PhoneNumber;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Component;

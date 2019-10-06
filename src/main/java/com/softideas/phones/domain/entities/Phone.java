@@ -1,7 +1,7 @@
 package com.softideas.phones.domain.entities;
 
-import com.softideas.phones.domain.models.RejectionReason;
-import com.softideas.phones.domain.models.PhoneNumberStatus;
+import com.softideas.phones.models.RejectionReason;
+import com.softideas.phones.models.PhoneNumberStatus;
 import lombok.Getter;
 import lombok.Setter;
 

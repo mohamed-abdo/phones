@@ -1,4 +1,4 @@
-package com.softideas.phones.domain.models;
+package com.softideas.phones.models;
 
 public enum RejectionReason {
     ILLEGAL_CHARS("ILLEGAL_CHARS", "number contains illegal alphanumeric characters."),

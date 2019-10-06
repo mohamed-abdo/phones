@@ -1,8 +1,8 @@
 package com.softideas.phones.domain.services;
 
-import com.softideas.phones.domain.models.PhoneNumberStatus;
-import com.softideas.phones.domain.models.PhoneSheet;
-import com.softideas.phones.domain.models.RejectionReason;
+import com.softideas.phones.models.PhoneNumberStatus;
+import com.softideas.phones.models.PhoneSheet;
+import com.softideas.phones.models.RejectionReason;
 import com.softideas.phones.domain.repositories.ImportedFileRepository;
 import com.softideas.phones.domain.repositories.PhoneRepository;
 import org.apache.commons.codec.digest.DigestUtils;

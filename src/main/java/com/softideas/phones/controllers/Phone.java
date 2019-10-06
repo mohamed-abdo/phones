@@ -1,7 +1,7 @@
-package com.softideas.phones.domain.controllers;
+package com.softideas.phones.controllers;
 
-import com.softideas.phones.domain.models.PhoneNumber;
-import com.softideas.phones.domain.models.PhoneSheet;
+import com.softideas.phones.models.PhoneNumber;
+import com.softideas.phones.models.PhoneSheet;
 import com.softideas.phones.domain.services.PhoneService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;

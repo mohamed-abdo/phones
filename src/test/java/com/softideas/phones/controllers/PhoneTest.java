@@ -1,6 +1,6 @@
-package com.softideas.phones.domain.controllers;
+package com.softideas.phones.controllers;
 
-import com.softideas.phones.domain.models.UploadStats;
+import com.softideas.phones.models.UploadStats;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

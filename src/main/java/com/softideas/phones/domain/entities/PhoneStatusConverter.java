@@ -1,6 +1,6 @@
 package com.softideas.phones.domain.entities;
 
-import com.softideas.phones.domain.models.PhoneNumberStatus;
+import com.softideas.phones.models.PhoneNumberStatus;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

@@ -1,4 +1,4 @@
-package com.softideas.phones.domain.models;
+package com.softideas.phones.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

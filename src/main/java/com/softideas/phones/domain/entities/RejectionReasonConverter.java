@@ -1,6 +1,6 @@
 package com.softideas.phones.domain.entities;
 
-import com.softideas.phones.domain.models.RejectionReason;
+import com.softideas.phones.models.RejectionReason;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

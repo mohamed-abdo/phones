@@ -1,7 +1,7 @@
 package com.softideas.phones.domain.services;
 
-import com.softideas.phones.domain.models.PhoneSheet;
-import com.softideas.phones.domain.models.UploadStats;
+import com.softideas.phones.models.PhoneSheet;
+import com.softideas.phones.models.UploadStats;
 import org.springframework.lang.NonNull;
 
 import java.io.IOException;

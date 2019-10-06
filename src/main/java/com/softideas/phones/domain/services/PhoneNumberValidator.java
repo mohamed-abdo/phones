@@ -1,6 +1,6 @@
 package com.softideas.phones.domain.services;
 
-import com.softideas.phones.domain.models.RejectionReason;
+import com.softideas.phones.models.RejectionReason;
 import org.springframework.lang.NonNull;
 
 import java.util.Objects;
