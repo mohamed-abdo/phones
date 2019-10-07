@@ -13,5 +13,4 @@ class ApiValidationError {
     private String field;
     private Object rejectedValue;
     private String message;
-
 }

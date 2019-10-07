@@ -1,5 +1,6 @@
-package com.softideas.phones.utils;
+package com.softideas.phones.config;
 
+import com.softideas.phones.utils.ApiError;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
-    protected ResponseEntity<Object> ResponseStatusException(ResponseStatusException ex) {
+    protected ResponseEntity<?> ResponseStatusException(ResponseStatusException ex) {
         return new ApiError(ex.getStatus(), ex.getMessage(), ex)
                 .buildResponseEntity();
     }

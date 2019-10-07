@@ -1,5 +1,6 @@
-package com.softideas.phones.utils;
+package com.softideas.phones.config;
 
+import com.softideas.phones.utils.ApiError;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,7 +13,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class RunTimeExceptionHandler extends RuntimeException {
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> genericHandler(Exception ex) {
+    protected ResponseEntity<?> genericHandler(Exception ex) {
         return new ApiError(INTERNAL_SERVER_ERROR, ex.getMessage(), ex)
                 .buildResponseEntity();
     }

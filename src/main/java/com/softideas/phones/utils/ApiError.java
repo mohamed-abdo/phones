@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Getter
-class ApiError {
+public class ApiError {
     @Builder.Default
     private UUID debugId = UUID.randomUUID();
     private HttpStatus status;
@@ -31,14 +31,14 @@ class ApiError {
         this.status = status;
     }
 
-    ApiError(HttpStatus status, String message, Exception ex) {
+    public ApiError(HttpStatus status, String message, Exception ex) {
 
         this.status = status;
         this.message = message;
         this.debugMessage = ex.getLocalizedMessage();
     }
 
-    ResponseEntity<Object> buildResponseEntity() {
+    public ResponseEntity<?> buildResponseEntity() {
         return new ResponseEntity<>(this, this.getStatus());
     }
 
